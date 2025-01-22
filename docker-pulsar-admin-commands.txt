@@ -1,0 +1,34 @@
+docker run -it --rm apachepulsar/pulsar:4.0.1 bin/pulsar-admin --admin-url http://172.17.0.2:8080 help
+
+Create a new Function
+docker run -it --rm -v ~/projects/aiagent/pulsar-func/pulsar-function-json-processor/target:/target apachepulsar/pulsar:4.0.1 bin/pulsar-admin --admin-url http://172.17.0.2:8080 functions create \
+  --tenant public \
+  --namespace default \
+  --name json-processor-function \
+  --inputs input-topic \
+  --output output-topic \
+  --jar /target/pulsar-function-json-processor-1.0-SNAPSHOT.jar \
+  --classname com.example.PulsarJsonProcessorFunction \
+  --py " " \
+  --user-config '{"badDataTopic": "bad-data-topic"}'
+
+Get Functions Status
+docker run -it --rm apachepulsar/pulsar:4.0.1 bin/pulsar-admin --admin-url http://172.17.0.2:8080 functions status \
+  --tenant public \
+  --namespace default \
+  --name json-processor-function
+
+Get Function Stats
+docker run -it --rm apachepulsar/pulsar:4.0.1 bin/pulsar-admin --admin-url http://172.17.0.2:8080 functions stats \
+  --tenant public \
+  --namespace default \
+  --name json-processor-function
+
+List Topics
+docker run -it --rm apachepulsar/pulsar:4.0.1 bin/pulsar-admin --admin-url http://172.17.0.2:8080 topics list public/default
+
+Send a JSON message
+docker run -it --rm apachepulsar/pulsar:4.0.1 bin/pulsar-client --url pulsar://172.17.0.2:6650 produce public/default/input-topic -m '{"message": "hello world"}'
+
+Receive messages 
+docker run -it --rm apachepulsar/pulsar:4.0.1 bin/pulsar-client --url pulsar://172.17.0.2:6650 consume public/default/input-topic -s "my-subscription" -n 0

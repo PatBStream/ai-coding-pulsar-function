@@ -1,0 +1,6 @@
+Develop an Apache Pulsar Function to read/receive a JSON message from a topic, process the JSON message, 
+write the JSON message and payload to a logfile, then send a new JSON message with "Message State":"Received" as the payload, 
+along with the original payload.  The function should have robust error handling, log any invalid messages.  
+If the JSON message is invalid, send the bad message to another Pulsar topic for bad data. 
+
+You need to determine the proper programming language to use, follow Apache Pulsar Function development best practices
